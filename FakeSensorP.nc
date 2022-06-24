@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "smartBracelet.h"
 generic module FakeSensorP() {
 
 	provides interface Read<sensor_status>;

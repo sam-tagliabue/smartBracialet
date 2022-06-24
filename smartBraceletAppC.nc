@@ -5,19 +5,20 @@
  *  @author Luca Pietro Borsani
  */
 
-#include "sendAck.h"
+#include "smartBracelet.h"
 
-configuration sendAckAppC {}
+configuration smartBraceletAppC {}
 
 implementation {
 
 
 /****** COMPONENTS *****/
-  components MainC, sendAckC as App;
-  components new AMSenderC(AM_MY_MSG);
-  components new AMReceiverC(AM_MY_MSG);
-  components new TimerMilliC();
-  components ActiveMessageC;
+  components MainC, smartBraceletC as App;
+  components new AMSenderC(AM_RADIO_TYPE);
+  components new AMReceiverC(AM_RADIO_TYPE);
+  components new TimerMilliC() as timerPairing;
+  components new TimerMilliC() as timer10s;
+  components new TimerMilliC() as timer60s;
   components new FakeSensorC();
 
 /****** INTERFACES *****/
@@ -30,13 +31,24 @@ implementation {
   //Interfaces to access package fields
   //Timer interface
   //Fake Sensor read
-  App.Receive -> AMReceiverC;
+  App.Boot -> MainC.Boot;
+  
+  // Radio interface
   App.AMSend -> AMSenderC;
-  App.MilliTimer -> TimerMilliC;
+  App.Receive -> AMReceiverC;
+  App.AMControl -> RadioAM;
+  
   App.Packet -> AMSenderC;
-  App.PacketAcknowledgements -> ActiveMessageC;
-  App.Read -> FakeSensorC;
-  App.SplitControl -> ActiveMessageC;
+  App.AMPacket -> AMSenderC;
+  App.PacketAcknowledgements -> RadioAM;
+
+  // Timers
+  App.timerPairing -> timerPairing;
+  App.timer10s -> timer10s;
+  App.timer60s -> timer60s;
+  
+
+  App.FakeSensor -> FakeSensorC;
 
 }
 
