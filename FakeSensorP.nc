@@ -26,13 +26,13 @@ implementation
 	  int random_number = (call Random.rand16() % 10);
 		
 		if (random_number <= 2){
-		  strcpy(status.status, "STANDING");
+		status.status=1; // standing
 		} else if (random_number <= 5){
-		  strcpy(status.status, "WALKING");
+		status.status=2; //walking
 		} else if (random_number <= 8){
-		  strcpy(status.status, "RUNNING");
+		status.status=3; // running
 		} else {
-		  strcpy(status.status, "FALLING");
+		status.status=4; // falling
 		}
 		
 		signal Read.readDone( SUCCESS, status);

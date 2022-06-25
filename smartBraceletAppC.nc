@@ -20,6 +20,7 @@ implementation {
   components new TimerMilliC() as timer10s;
   components new TimerMilliC() as timer60s;
   components new FakeSensorC();
+    components ActiveMessageC as RadioAM;
 
 /****** INTERFACES *****/
   //Boot interface
@@ -48,7 +49,7 @@ implementation {
   App.timer60s -> timer60s;
   
 
-  App.FakeSensor -> FakeSensorC;
+  App.Fakesensor -> FakeSensorC;
 
 }
 
