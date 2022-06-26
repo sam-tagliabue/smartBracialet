@@ -34,6 +34,7 @@ module smartBraceletC {
      int i;
   
   sensor_status status;
+  sensor_status last_status;
   
   void send_confirmation();
   void send_info_message();
@@ -76,7 +77,7 @@ module smartBraceletC {
 				}
       
       if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(sb_msg_t)) == SUCCESS) {
-	      dbg("Radio", "Radio: sending pairing packet, key=%s\n", RANDOM_KEY[TOS_NODE_ID/2]);	
+	      dbg("Radio", "Radio: sending pairing packet, key=%s\n", key[TOS_NODE_ID/2]);	
 	      busy = TRUE;
       }
     }
@@ -228,7 +229,7 @@ module smartBraceletC {
         call PacketAcknowledgements.requestAck( &packet );
         
         if (call AMSend.send(address_coupled_device, &packet, sizeof(sb_msg_t)) == SUCCESS) {
-          dbg("Radio", "Radio: sanding INFO packet to node %hhu, attempt: %d\n", address_coupled_device, attempt);	
+          dbg("Radio", "Radio: sanding INFO packet to node %hhu, attempt: %d\n", address_coupled_device);	
         }
       }
  
@@ -237,7 +238,7 @@ module smartBraceletC {
     event void timer60s.fired() {
     dbg("Timer60s", "Timer60s: timer fired at time %s\n", sim_time_string());
     dbg("Info", "ALERT: MISSING");
-    dbg("Info","Last known location: %hhu, Y: %hhu\n", last_status.X, last_status.Y);
+    dbg("Info","Last known location: %hhu, Y: %hhu\n", status.X, status.Y);
 
     //send to serial here
 
